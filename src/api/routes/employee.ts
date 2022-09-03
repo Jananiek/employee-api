@@ -13,7 +13,9 @@ export default (app: Router): void => {
   app.use('/employee', route);
 
   route.post('/', async (req: Request, res: Response) => {
-    const employee = Object.assign(new Employees(), req.body);
+    const image = req.body?.profile_picture ? req.body?.profile_picture : null;
+    const formattedImage = image.trim().split(',');
+    const employee = Object.assign(new Employees(), { ...req.body, profile_picture: formattedImage[1] });
     const errors = await validate(employee, DEFAULT_VALIDATION_OPTIONS);
     if (errors.length > 0) {
       logger.error('Validation Errors: ', errors);
@@ -32,21 +34,21 @@ export default (app: Router): void => {
     }
   });
 
-    route.get('/:email', async (req: Request, res: Response) => {
-      const email = req.params.email ? String(req.params.email) : undefined;
-      if (!email) {
-        return ErrorResponse(res, { message: 'Missing employee email' });
-      }
-      try {
-        const result = await employeeService.getOne(email);
-        return SuccessResponse(res, result, null, 200);
-      } catch (e) {
-        logger.error('Get employee details by email', {
-          module: modules.employee,
-          service: 'employee',
-          data: e.message,
-        });
-        return ErrorResponse(res, { message: e.message });
-      }
-    });
+  route.get('/:email', async (req: Request, res: Response) => {
+    const email = req.params.email ? String(req.params.email) : undefined;
+    if (!email) {
+      return ErrorResponse(res, { message: 'Missing employee email' });
+    }
+    try {
+      const result = await employeeService.getOne(email);
+      return SuccessResponse(res, result, null, 200);
+    } catch (e) {
+      logger.error('Get employee details by email', {
+        module: modules.employee,
+        service: 'employee',
+        data: e.message,
+      });
+      return ErrorResponse(res, { message: e.message });
+    }
+  });
 };
