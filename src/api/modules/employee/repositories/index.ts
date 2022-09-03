@@ -9,6 +9,10 @@ export class EmployeeRepository {
   }
 
   async getOne(email: string): Promise<Employees> {
-    return getRepository(Employees).findOne({ where: { email }});
+    const employee = getRepository(Employees).findOne({ where: { email } });
+    if (!employee) {
+      return null;
+    }
+    employee;
   }
 }

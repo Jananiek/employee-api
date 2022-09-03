@@ -32,7 +32,7 @@ export class Employees {
     nullable: true,
   })
   @IsBase64()
-  @IsByteLength(10, 10000000)
+  @IsByteLength(1, 10000000)
   profile_picture: Buffer;
 
   @CreateDateColumn({

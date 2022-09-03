@@ -17,5 +17,5 @@
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  "include": ["./src/**/*", "src/config/ormconfig.ts"],
+  "include": ["./src/**/*", "src/config/ormconfig.ts", "test"],
 }
