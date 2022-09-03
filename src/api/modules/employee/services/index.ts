@@ -1,4 +1,5 @@
 import { Employees } from '../../../../typeorm/entities/Employee';
+import { CustomError } from '../../../../utils/errorHandle/customErrors';
 import { EmployeeRepository } from '../repositories';
 export class EmployeeService {
   protected employeeRepository: EmployeeRepository;
@@ -10,7 +11,7 @@ export class EmployeeService {
   public async createOne(employee: Employees): Promise<Employees> {
     const isExists = await this.employeeRepository.getOne(employee.email);
     if (isExists) {
-      throw new Error('Employee email address is already exists');
+      throw new CustomError('Employee email address is already exists');
     }
     const result = await this.employeeRepository.createOne(employee);
     if (!result) return null;
