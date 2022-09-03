@@ -4,7 +4,7 @@ import { EmployeeService } from '../modules/employee/services';
 import { Employees } from '../../typeorm/entities/Employee';
 
 import logger, { modules } from '../../loaders/logger/index';
-import { ErrorResponse, SuccessResponse } from '../../utils/responseHandler';
+import { ErrorResponse, ErrorResponseHandler, SuccessResponse } from '../../utils/responseHandler';
 import { DEFAULT_VALIDATION_OPTIONS } from '../../utils/constants/common';
 const route = Router();
 const employeeService = new EmployeeService();
@@ -30,7 +30,7 @@ export default (app: Router): void => {
         service: 'employee',
         data: e.message,
       });
-      return ErrorResponse(res, { message: e.message });
+      return ErrorResponseHandler(res, { message: e.message,name:e.name });
     }
   });
 
@@ -48,7 +48,7 @@ export default (app: Router): void => {
         service: 'employee',
         data: e.message,
       });
-      return ErrorResponse(res, { message: e.message });
+      return ErrorResponseHandler(res, { message: e.message, name: e.name });
     }
   });
 };
